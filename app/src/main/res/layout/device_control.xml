@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+     <TextView
+            android:id="@+id/tvMAC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+     
+     
+     <GridView 
+         android:id="@+id/codeGridView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginBottom="3dp"
+         android:layout_marginLeft="45dp"
+         android:layout_marginRight="45dp"
+         android:layout_marginTop="3dp"
+         android:fadingEdge="none"
+         android:focusable="false"
+         android:horizontalSpacing="5dp"
+         android:listSelector="@android:color/transparent"
+         android:numColumns="3"
+         android:overScrollMode="never"
+         android:scrollX="0dp"
+         android:scrollbarStyle="insideInset"
+         android:scrollbars="none"
+         android:verticalSpacing="10dp" 
+         />
+     
+</LinearLayout>

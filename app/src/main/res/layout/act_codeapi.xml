@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="device" />
+
+    <Spinner
+        android:id="@+id/devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/llDeviceType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_device">
+
+        <Button
+            android:id="@+id/getDeviceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="onClick"
+            android:text="getDeviceType" />
+
+        <Spinner
+            android:id="@+id/spType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/getDeviceType"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/getDeviceType" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/llBrandByType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDeviceType"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/getBrandByType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="onClick"
+            android:text="getBrandByType" />
+
+        <Spinner
+            android:id="@+id/spBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/getBrandByType"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/getBrandByType" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/llDataByBrand"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llBrandByType"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/getMatchedDataByBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="onClick"
+            android:text="getDataByBrand" />
+
+        <Spinner
+            android:id="@+id/spData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/getMatchedDataByBrand"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_toRightOf="@id/getMatchedDataByBrand" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/getDetailByRCID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDataByBrand"
+        android:onClick="onClick"
+        android:text="getDetailByRCID" />
+
+    <Button
+        android:id="@+id/getFastMatched"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/getDetailByRCID"
+        android:onClick="onClick"
+        android:text="getFastMatched" />
+
+    <Button
+        android:id="@+id/wifitest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/getFastMatched"
+        android:onClick="onClick"
+        android:text="wifi Test" />
+
+    <Button
+        android:id="@+id/study"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/getFastMatched"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/wifitest"
+        android:onClick="onClick"
+        android:text="study" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wifitest">
+
+        <TextView
+            android:id="@+id/showText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+</RelativeLayout>
