@@ -1,83 +1,237 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名："
-            android:textSize="14sp" />
+            android:text="    用户的注册方式有多种，比如手机号、普通用户名、邮箱等，APP可以根据需要采取不同的方式。"
+            android:textColor="@android:color/black"
+            android:textSize="11sp" />
 
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:hint="请输入用户名"
-            android:textSize="14sp" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户名："
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="请输入用户名"
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="密码："
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/et_psw"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机验证码："
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/et_mac"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:hint="请输入手机验证码"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btn_mac"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:onClick="onClick"
+                android:text="获取验证码"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_register_normal"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:onClick="onClick"
+                android:text="普通注册"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btn_register_email"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:onClick="onClick"
+                android:text="邮箱注册"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btn_register_phone"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:onClick="onClick"
+                android:text="手机注册"
+                android:textSize="11sp" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密码："
-            android:textSize="14sp" />
+            android:text="（Tips1：普通注册暂时没有重置密码的功能，邮箱／手机注册可以重置）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
 
-        <EditText
-            android:id="@+id/et_psw"
-            android:layout_width="150dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入密码"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:text="（Tips2.通过有效的电子邮箱地址，注册一个账号。注册成功后，云端会给指定邮箱发送注册成功的邮件。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（Tips3.手机注册需要手机发送验证码。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
 
-        <Button
-            android:layout_marginLeft="20dp"
-            android:id="@+id/btn_login"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:onClick="onClick"
-            android:text="登录"
-            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:onClick="onClick"
-            android:layout_marginRight="20dp"
-            android:text="注册"
-            android:textSize="14sp" />
-    </RelativeLayout>
+            <Button
+                android:id="@+id/btn_reset_psw_email"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:onClick="onClick"
+                android:text="邮箱重置密码"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btn_reset_psw_phone"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:onClick="onClick"
+                android:text="手机重置密码"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（Tips4：如果忘记了用户密码，可以通过手机验证码或邮箱设置新的密码。SDK支持手机号重置密码和邮箱重置密码两种，手机号重置需要接收验证码，邮箱重置需要进⼊邮箱，根据链接提示进行重置。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（Tips5.手机号重置密码时，需要先获取短信验证码再重置。获取短信验证码方式与手机注册时相同。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（Tips6.邮箱重置密码时，云端会给指定邮箱发送安全链接。用户需要到邮箱中查收邮件，并按邮件指示执行重置操作。重置密码邮件有可能进入用户的邮箱的垃圾箱中，需提醒用户。邮件发送成功回调与密码修改成功回调一致，因此需要注意在回调的时候区分。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:onClick="onClick"
+                android:text="普通登录"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btn_login_phone"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:onClick="onClick"
+                android:text="手机/邮箱登录"
+                android:textSize="11sp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_anonymous_login"
             android:layout_width="140dp"
             android:layout_height="40dp"
-            android:layout_marginTop="50dp"
             android:layout_alignParentRight="true"
             android:onClick="onClick"
             android:text="匿名登录"
-            android:textSize="14sp" />
+            android:textSize="11sp" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（Tips7 ：匿名登录不需要注册即可直接登录。）"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

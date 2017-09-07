@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
 
     defaultConfig {
         applicationId "com.ykan.sdk.example"
-        minSdkVersion 19
+        minSdkVersion 18
         targetSdkVersion 22
+        versionCode 56
+        versionName "1.1.0"
         ndk {
             moduleName "crypt"
         }

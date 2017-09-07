@@ -37,6 +37,7 @@ import com.yaokan.sdk.model.YKError;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
 import com.yaokan.sdk.utils.Utility;
+import com.yaokan.sdk.wifi.DeviceManager;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener {
 
@@ -86,6 +87,11 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
         ykanInterface = new YkanIRInterfaceImpl(getApplicationContext());
         initView();
         initDevice();
+        List<GizWifiDevice> gizWifiDevices = DeviceManager
+                .instanceDeviceManager(getApplicationContext()).getCanUseGizWifiDevice();
+        if(gizWifiDevices!=null){
+            Log.e("YKCodeAPIActivity",gizWifiDevices.size()+"");
+        }
     }
 
     private void initDevice() {
@@ -282,7 +288,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                 case R.id.getMatchedDataByBrand:
                     if (currBrand != null) {
                         ykanInterface.getRemoteMatched(currGizWifiDevice.getMacAddress(),
-                                currBrand.getBid(), currDeviceType.getTid(), 4, new YKanHttpListener() {
+                                currBrand.getBid(), currDeviceType.getTid(), new YKanHttpListener() {
                                     @Override
                                     public void onSuccess(BaseResult baseResult) {
                                         controlResult = (MatchRemoteControlResult) baseResult;

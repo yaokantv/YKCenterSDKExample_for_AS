@@ -12,7 +12,6 @@ import com.yaokan.sdk.model.AirEvent;
 import com.yaokan.sdk.model.AirStatus;
 import com.yaokan.sdk.model.AirV1Command;
 import com.yaokan.sdk.model.AirV3Command;
-import com.yaokan.sdk.model.DeviceDataStatus;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
 import com.yaokan.sdk.utils.Logger;
@@ -64,6 +63,8 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
         setOnClickListener();
     }
 
+    private RemoteControl remoteControl;
+
     private void initDevice() {
         Intent intent = getIntent();
         device = (GizWifiDevice) intent.getParcelableExtra("GizWifiDevice");
@@ -72,7 +73,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
         driverControl.getDevice().getHardwareInfo();
         //修改设备显示名称
         driverControl.getDevice().setCustomInfo("alias", "遥控中心产品");
-        RemoteControl remoteControl = jsonParser.parseObjecta(intent.getStringExtra("remoteControl"), RemoteControl.class);
+        remoteControl = jsonParser.parseObjecta(intent.getStringExtra("remoteControl"), RemoteControl.class);
         if (!Utility.isEmpty(remoteControl)) {
             airVerSion = remoteControl.getVersion();
             codeDatas = remoteControl.getRcCommand();
@@ -120,6 +121,13 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 airEvent = new AirV1Command(codeDatas);
             }
         }
+//        Map.Entry<String,KeyCode> entry;
+//        for(Iterator iterator = codeDatas.entrySet().iterator();iterator.hasNext();){
+//            entry = (Map.Entry<String, KeyCode>) iterator.next();
+//            entry.getKey();
+//            YourKeyCode yourKeyCode = new YourKeyCode();
+//            yourKeyCode.setSrcCode(entry.getValue().getSrcCode());
+//        }
         return airEvent;
     }
 
@@ -187,14 +195,14 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
     private String getContent(AirStatus airStatus) {
         String content = "";
         if (airVerSion == 1) {
-            content = "模式：" + airStatus.getMode().getName()
-                    + "\n温度：" + airStatus.getTemp().getName();
+            content = "模式：" + airStatus.getMode().getChName()
+                    + "\n温度：" + airStatus.getTemp().getChName();
         } else {
-            content = "模式：" + airStatus.getMode().getName()
-                    + "\n风量：" + airStatus.getSpeed().getName()
-                    + "\n左右扫风：" + airStatus.getWindLeft().getName()
-                    + "\n上下扫风：" + airStatus.getWindUp().getName()
-                    + "\n温度：" + airStatus.getTemp().getName();
+            content = "模式：" + airStatus.getMode().getChName()
+                    + "\n风量：" + airStatus.getSpeed().getChName()
+                    + "\n左右扫风：" + airStatus.getWindLeft().getChName()
+                    + "\n上下扫风：" + airStatus.getWindUp().getChName()
+                    + "\n温度：" + airStatus.getTemp().getChName();
         }
         return content;
 
