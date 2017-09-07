@@ -247,16 +247,27 @@
 - 	3-5: 用户以及遥控中心设备管理DeviceManager（单例模式）
     ```
     1：用户注册：
-	public void  registerUser(String userName, String password, String code, GizUserAccountType userType)  
-	注：目前只支持GizUserAccountType.GizUserNormal类型注册
-
+	public void  register(String userName, String password, String code, YKUserAccountType type)  
+	注：YKUserAccountType.YKUserAccountType普通注册
+        YKUserAccountType.YKUserPhone手机注册
+        YKUserAccountType.YKUserEmail邮箱注册
+        
+        a.获取验证码
+        sendPhoneSmsCode(Context context, String phone)
+        获取验证码需要设置回调didRequestSendPhoneSMSCodeCb(GizWifiErrorCode result)
+        
+    普通注册暂时没有重置密码的功能，邮箱／手机注册可以重置
+        
 	2：用户登录
 		a.匿名登录
 		public void  userLoginAnonymous()
 		
 		b.正常登录（用注册后的账号登录）
-		public void  userLogin(String userName, String password)
-	
+		public void  register(String userName, String password, String code, YKUserAccountType type)
+		
+		注：普通登录传YKUserAccountType.YKUserAccountType
+	        其他登录方式传YKUserAccountType.YKUserPhone／YKUserEmail都可以，这里只对普通登录作区分。
+	        
 	3 判断是否需要登录
 	public boolean isneedLogin（）
 	注：返回值为true时则必须调用登录接口，false时则可以为不用调用。
@@ -270,7 +281,12 @@
 	6解除某个设备的绑定
 	public void  unbindDevice (String did)
 	
-	7回调接口GizWifiCallBack
+	7重置密码
+	resetPassword(String userName, String password, String code, YKUserAccountType type)
+	 
+	注： 手机重置密码先要获取手机验证码
+	
+	8回调接口GizWifiCallBack
 		a注册回调
 		public  void  registerUserCb(GizWifiErrorCode result, String uid, String token)
 		
@@ -279,6 +295,12 @@
 		
 		c刷新设备列表回调
 		public void discoveredrCb(GizWifiErrorCode result,List<GizWifiDevice> deviceList)
+		
+		d发送验证码回调
+            public void didRequestSendPhoneSMSCodeCb(GizWifiErrorCode result)
+        
+            e重置密码回调
+            public void didChangeUserPasswordCd(GizWifiErrorCode result)
     ```
 
 
