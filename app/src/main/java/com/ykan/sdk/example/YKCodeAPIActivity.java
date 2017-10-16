@@ -37,6 +37,7 @@ import com.yaokan.sdk.model.YKError;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
 import com.yaokan.sdk.utils.Utility;
+import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.DeviceManager;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener {
@@ -76,6 +77,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
     private Spinner spType, spBrands, spRemotes;
 
     private ArrayAdapter<String> typeAdapter, brandAdapter, remoteAdapter;
+    private DeviceController driverControl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +91,8 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
         initDevice();
         List<GizWifiDevice> gizWifiDevices = DeviceManager
                 .instanceDeviceManager(getApplicationContext()).getCanUseGizWifiDevice();
-        if(gizWifiDevices!=null){
-            Log.e("YKCodeAPIActivity",gizWifiDevices.size()+"");
+        if (gizWifiDevices != null) {
+            Log.e("YKCodeAPIActivity", gizWifiDevices.size() + "");
         }
     }
 
@@ -107,6 +109,14 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                 currGizWifiDevice.setSubscribe(true);
             }
         }
+        //小苹果 小夜灯
+        driverControl = new DeviceController(getApplicationContext(), currGizWifiDevice, null);
+        findViewById(R.id.night).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                driverControl.sendNightLight();
+            }
+        });
     }
 
     private void initView() {
@@ -177,6 +187,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
         intent.setClass(this, YKWifiDeviceControlActivity.class);
         intent.putExtra("GizWifiDevice", currGizWifiDevice);
         try {
+            intent.putExtra("remoteControl", jsonParser.toJson(remoteControl));
             intent.putExtra("rcCommand", jsonParser.toJson(remoteControl.getRcCommand()));
         } catch (JSONException e) {
             Log.e(TAG, "JSONException:" + e.getMessage());
@@ -198,6 +209,11 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.scheduler_list:
+                Intent intent1 = new Intent(YKCodeAPIActivity.this, SchedulerListActivity.class);
+                intent1.putExtra("GizWifiDevice", currGizWifiDevice);
+                startActivity(intent1);
+                break;
             case R.id.wifitest:
             case R.id.study:
                 // 进入遥控控制面板
@@ -330,24 +346,24 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                     }
                     Log.d(TAG, " getDetailByRCID result:" + result);
                     break;
-                case R.id.getFastMatched:
-                    ykanInterface
-                            .getFastMatched(currGizWifiDevice.getMacAddress(), 87, 7,
-                                    "1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24",
-                                    new YKanHttpListener() {
-                                        @Override
-                                        public void onSuccess(BaseResult baseResult) {
-                                            MatchRemoteControlResult rcFastMatched = (MatchRemoteControlResult) baseResult;
-                                            result = rcFastMatched.toString();
-                                            Log.d(TAG, " getFastMatched result:" + result);
-                                        }
-
-                                        @Override
-                                        public void onFail(YKError ykError) {
-                                            Log.e(TAG, "ykError:" + ykError.toString());
-                                        }
-                                    });
-                    break;
+//                case R.id.getFastMatched:
+//                    ykanInterface
+//                            .getFastMatched(currGizWifiDevice.getMacAddress(), 87, 7,
+//                                    "1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24",
+//                                    new YKanHttpListener() {
+//                                        @Override
+//                                        public void onSuccess(BaseResult baseResult) {
+//                                            MatchRemoteControlResult rcFastMatched = (MatchRemoteControlResult) baseResult;
+//                                            result = rcFastMatched.toString();
+//                                            Log.d(TAG, " getFastMatched result:" + result);
+//                                        }
+//
+//                                        @Override
+//                                        public void onFail(YKError ykError) {
+//                                            Log.e(TAG, "ykError:" + ykError.toString());
+//                                        }
+//                                    });
+//                    break;
                 default:
                     break;
             }

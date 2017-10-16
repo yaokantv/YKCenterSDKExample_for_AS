@@ -268,9 +268,6 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
 		case GIZ_SDK_DEVICE_MAC_INVALID:
 			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_DEVICE_MAC_INVALID);
 			break;
-		case GIZ_SDK_SUBDEVICE_DID_INVALID:
-			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_SUBDEVICE_DID_INVALID);
-			break;
 		case GIZ_SDK_DEVICE_PASSCODE_INVALID:
 			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_DEVICE_PASSCODE_INVALID);
 			break;
@@ -376,12 +373,6 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
 			break;
 		case GIZ_SDK_GROUP_PRODUCTKEY_INVALID:
 			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_GROUP_PRODUCTKEY_INVALID);
-			break;
-		case GIZ_SDK_GROUP_FAILED_DELETE_DEVICE:
-			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_GROUP_FAILED_DELETE_DEVICE);
-			break;
-		case GIZ_SDK_GROUP_FAILED_ADD_DEVICE:
-			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_GROUP_FAILED_ADD_DEVICE);
 			break;
 		case GIZ_SDK_GROUP_GET_DEVICE_FAILED:
 			errorString = (String)ctx.getResources().getText(R.string.GIZ_SDK_GROUP_GET_DEVICE_FAILED);

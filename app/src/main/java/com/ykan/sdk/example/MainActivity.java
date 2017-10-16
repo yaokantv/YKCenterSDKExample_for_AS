@@ -75,8 +75,7 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            List<GizWifiDevice> gizWifiDevices = DeviceManager
-                                    .instanceDeviceManager(getApplicationContext()).getCanUseGizWifiDevice();
+                            List<GizWifiDevice> gizWifiDevices = DeviceManager.instanceDeviceManager(getApplicationContext()).getCanUseGizWifiDevice();
                             if (gizWifiDevices != null) {
                                 Log.e("MainActivity", gizWifiDevices.size() + "");
                             }
@@ -103,6 +102,8 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
                 Logger.d(TAG, "didUserLogin result:" + result + " uid:" + uid + " token:" + token);
                 dialogUtils.sendMessage(ProgressDialogUtils.DISMISS);
                 if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {// 登陆成功
+                    Constant.UID = uid;
+                    Constant.TOKEN = token;
                     toDeviceList();
                 } else if (result == GizWifiErrorCode.GIZ_OPENAPI_USER_NOT_EXIST) {// 用户不存在
                     toast(R.string.GIZ_OPENAPI_USER_NOT_EXIST);
@@ -193,7 +194,7 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
                 if (!TextUtils.isEmpty(etName.getText().toString()) && !TextUtils.isEmpty(etPsw.getText().toString())) {
                     dialogUtils.setMessage("login...");
                     dialogUtils.sendMessage(ProgressDialogUtils.SHOW);
-                    DeviceManager.instanceDeviceManager(getApplicationContext()).userLogin(etName.getText().toString(), etPsw.getText().toString(),YKUserAccountType.YKUserNormal);
+                    DeviceManager.instanceDeviceManager(getApplicationContext()).userLogin(etName.getText().toString(), etPsw.getText().toString(), YKUserAccountType.YKUserNormal);
                 } else {
                     toast("请输入完整信息");
                 }
@@ -202,7 +203,7 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
                 if (!TextUtils.isEmpty(etName.getText().toString()) && !TextUtils.isEmpty(etPsw.getText().toString())) {
                     dialogUtils.setMessage("login...");
                     dialogUtils.sendMessage(ProgressDialogUtils.SHOW);
-                    DeviceManager.instanceDeviceManager(getApplicationContext()).userLogin(etName.getText().toString(), etPsw.getText().toString(),YKUserAccountType.YKUserPhone);
+                    DeviceManager.instanceDeviceManager(getApplicationContext()).userLogin(etName.getText().toString(), etPsw.getText().toString(), YKUserAccountType.YKUserPhone);
                 } else {
                     toast("请输入完整信息");
                 }

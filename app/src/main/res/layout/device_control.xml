@@ -11,7 +11,12 @@
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:attr/textAppearanceMedium" />
      
-     
+     <Button
+         android:id="@+id/night"
+         android:layout_marginLeft="45dp"
+         android:text="小夜灯"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />
      <GridView 
          android:id="@+id/codeGridView"
          android:layout_width="wrap_content"

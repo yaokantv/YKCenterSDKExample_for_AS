@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:onClick="onClick"
-            android:text="getDeviceType" />
+            android:text="获取设备类型" />
 
         <Spinner
             android:id="@+id/spType"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:onClick="onClick"
-            android:text="getBrandByType" />
+            android:text="获取设备品牌" />
 
         <Spinner
             android:id="@+id/spBrand"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:onClick="onClick"
-            android:text="getDataByBrand" />
+            android:text="获取遥控器集合" />
 
         <Spinner
             android:id="@+id/spData"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/llDataByBrand"
         android:onClick="onClick"
-        android:text="getDetailByRCID" />
+        android:text="获取遥控器数据" />
 
     <Button
         android:id="@+id/getFastMatched"
@@ -103,7 +103,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/getDetailByRCID"
         android:onClick="onClick"
-        android:text="getFastMatched" />
+        android:text="getFastMatched"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/wifitest"
@@ -111,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/getFastMatched"
         android:onClick="onClick"
-        android:text="wifi Test" />
+        android:text="遥控码测试" />
 
     <Button
         android:id="@+id/study"
@@ -121,7 +122,25 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/wifitest"
         android:onClick="onClick"
-        android:text="study" />
+        android:text="学习功能" />
+
+    <Button
+        android:id="@+id/night"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/getFastMatched"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/study"
+        android:onClick="onClick"
+        android:text="小夜灯" />
+
+    <Button
+        android:id="@+id/scheduler_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wifitest"
+        android:onClick="onClick"
+        android:text="定时任务列表" />
 
     <ScrollView
         android:layout_width="wrap_content"
