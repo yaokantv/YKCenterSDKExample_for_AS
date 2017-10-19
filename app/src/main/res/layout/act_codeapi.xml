@@ -64,7 +64,7 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/llDataByBrand"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:id="@+id/getMatchedDataByBrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
             android:onClick="onClick"
             android:text="获取遥控器集合" />
 
@@ -83,11 +83,17 @@
             android:id="@+id/spData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/getMatchedDataByBrand"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:layout_toRightOf="@id/getMatchedDataByBrand" />
-    </RelativeLayout>
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/match"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="测试匹配" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/getDetailByRCID"

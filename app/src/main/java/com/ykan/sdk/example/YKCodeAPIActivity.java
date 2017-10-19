@@ -1,11 +1,15 @@
 package com.ykan.sdk.example;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +34,7 @@ import com.yaokan.sdk.model.Brand;
 import com.yaokan.sdk.model.BrandResult;
 import com.yaokan.sdk.model.DeviceType;
 import com.yaokan.sdk.model.DeviceTypeResult;
+import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.MatchRemoteControl;
 import com.yaokan.sdk.model.MatchRemoteControlResult;
 import com.yaokan.sdk.model.RemoteControl;
@@ -48,7 +53,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
 
     private String TAG = YKCodeAPIActivity.class.getSimpleName();
 
-    private TextView showText, tvDevice;
+    private TextView tvDevice;
 
     private GizWifiDevice currGizWifiDevice;
 
@@ -121,7 +126,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
 
     private void initView() {
         dialogUtils = new ProgressDialogUtils(this);
-        showText = (TextView) findViewById(R.id.showText);
         tvDevice = (TextView) findViewById(R.id.tv_device);
         spType = (Spinner) findViewById(R.id.spType);
         spBrands = (Spinner) findViewById(R.id.spBrand);
@@ -209,6 +213,30 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.match:
+                if (currRemoteControl != null) {
+                    if (currRemoteControl.getRcCommand() != null && currRemoteControl.getRcCommand().size() > 0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(YKCodeAPIActivity.this);
+                        CharSequence c[] = new CharSequence[currRemoteControl.getRcCommand().size()];
+                        final String sCode[] = new String[currRemoteControl.getRcCommand().size()];
+                        Iterator<Map.Entry<String, KeyCode>> iterator = currRemoteControl.getRcCommand().entrySet().iterator();
+                        int i = 0;
+                        while (iterator.hasNext()) {
+                            Map.Entry<String, KeyCode> entry = iterator.next();
+                            c[i] = entry.getKey();
+                            sCode[i] = entry.getValue().getSrcCode();
+                            i++;
+                        }
+                        builder.setTitle("测试匹配").setItems(c, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                driverControl.sendCMD(sCode[which]);
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                    }
+                }
+                break;
             case R.id.scheduler_list:
                 Intent intent1 = new Intent(YKCodeAPIActivity.this, SchedulerListActivity.class);
                 intent1.putExtra("GizWifiDevice", currGizWifiDevice);
@@ -375,8 +403,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            showText.setText("appID:" + YkanSDKManager.getInstance().getAppId()
-                    + "\n" + (String) msg.obj);
             switch (msg.what) {
                 case 0:
                     if (deviceType != null) {
