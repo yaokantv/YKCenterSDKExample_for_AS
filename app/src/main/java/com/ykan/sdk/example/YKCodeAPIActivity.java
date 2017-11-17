@@ -1,12 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +21,7 @@ import android.widget.Toast;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.yaokan.sdk.api.JsonParser;
 import com.yaokan.sdk.api.YkanSDKManager;
+import com.yaokan.sdk.ir.OnTrunkReceiveListener;
 import com.yaokan.sdk.ir.YKanHttpListener;
 import com.yaokan.sdk.ir.YkanIRInterface;
 import com.yaokan.sdk.ir.YkanIRInterfaceImpl;
@@ -39,11 +35,17 @@ import com.yaokan.sdk.model.MatchRemoteControl;
 import com.yaokan.sdk.model.MatchRemoteControlResult;
 import com.yaokan.sdk.model.RemoteControl;
 import com.yaokan.sdk.model.YKError;
-import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.DeviceManager;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener {
 
@@ -53,8 +55,8 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
 
     private String TAG = YKCodeAPIActivity.class.getSimpleName();
 
-    private TextView tvDevice;
-
+    private TextView tvDevice, tvTrunkSend, tvTrunkReceive;
+    private EditText etTrunk;
     private GizWifiDevice currGizWifiDevice;
 
     private String deviceId;
@@ -122,11 +124,34 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                 driverControl.sendNightLight();
             }
         });
+        driverControl.setOnTrunkReceiveListener(new OnTrunkReceiveListener() {
+            @Override
+            public void onTrunkReceive(byte[] data) {
+                if (data != null && data.length > 0) {
+                    tvTrunkReceive.setText(Utility.bytesToHexString(data));
+                }
+            }
+        });
+        findViewById(R.id.trunk).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = etTrunk.getText().toString();
+                if (!TextUtils.isEmpty(data)) {
+                    tvTrunkSend.setText(data);
+                    driverControl.sendTrunk(data.getBytes());
+                }
+
+            }
+        });
     }
 
     private void initView() {
         dialogUtils = new ProgressDialogUtils(this);
+        etTrunk = (EditText) findViewById(R.id.et_trunk);
         tvDevice = (TextView) findViewById(R.id.tv_device);
+        tvTrunkSend = (TextView) findViewById(R.id.tv_trunk_send);
+        tvTrunkReceive = (TextView) findViewById(R.id.tv_trunk_receive);
+
         spType = (Spinner) findViewById(R.id.spType);
         spBrands = (Spinner) findViewById(R.id.spBrand);
         spRemotes = (Spinner) findViewById(R.id.spData);
@@ -402,7 +427,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
     }
 
     private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     if (deviceType != null) {

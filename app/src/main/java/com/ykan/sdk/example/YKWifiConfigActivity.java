@@ -1,8 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,6 +22,9 @@ import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.yaokan.sdk.giz.net.NetUtils;
 import com.yaokan.sdk.wifi.DeviceConfig;
 import com.yaokan.sdk.wifi.listener.IDeviceConfigListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class YKWifiConfigActivity extends Activity implements View.OnClickListener,IDeviceConfigListener {
 	
@@ -58,7 +58,7 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
 				isStartTimer();
 				break;
 			case SUCCESSFUL:
-				Toast.makeText(getApplicationContext(),R.string.configuration_successful, toastTime).show();
+				Toast.makeText(getApplicationContext(), R.string.configuration_successful, toastTime).show();
 				stopConfig(true);
 				break;
 			case FAILED:
@@ -208,7 +208,7 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
 
 	@Override
 	public void didSetDeviceOnboarding(GizWifiErrorCode result, String mac,
-			String did, String productKey) {
+                                       String did, String productKey) {
 		if (GizWifiErrorCode.GIZ_SDK_DEVICE_CONFIG_IS_RUNNING == result) {
 			return;
 		}

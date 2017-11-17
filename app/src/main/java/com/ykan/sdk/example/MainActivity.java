@@ -1,8 +1,8 @@
 package com.ykan.sdk.example;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,11 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
-import com.gizwits.gizwifisdk.enumration.GizUserAccountType;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.larksmart7618.sdk.communication.tools.commen.ToastTools;
 import com.yaokan.sdk.api.YkanSDKManager;
-import com.yaokan.sdk.giz.GosDeploy;
 import com.yaokan.sdk.ir.InitYkanListener;
 import com.yaokan.sdk.model.YKUserAccountType;
 import com.yaokan.sdk.utils.Logger;

@@ -1,11 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,22 +23,25 @@ import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizScheduleWeekday;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yaokan.sdk.api.JsonParser;
-import com.yaokan.sdk.giz.GosDeploy;
-import com.yaokan.sdk.model.Attrs;
 import com.yaokan.sdk.model.DeviceDataStatus;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
-import com.yaokan.sdk.wifi.YKDeviceSchedulerCenterListener;
-import com.yaokan.sdk.wifi.YKSchedulerCenter;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
+import com.yaokan.sdk.wifi.YKDeviceSchedulerCenterListener;
+import com.yaokan.sdk.wifi.YKSchedulerCenter;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class YKWifiDeviceControlActivity extends Activity implements IDeviceControllerListener, LearnCodeListener {
 

@@ -14,18 +14,15 @@ import android.widget.TextView;
 
 import com.gizwits.gizwifisdk.api.GizDeviceScheduler;
 import com.gizwits.gizwifisdk.api.GizDeviceSchedulerCenter;
-import com.gizwits.gizwifisdk.api.GizDeviceSchedulerGateWay;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizScheduleWeekday;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizDeviceSchedulerCenterListener;
-import com.gizwits.gizwifisdk.listener.GizDeviceSchedulerGateWayListener;
 import com.gizwits.gizwifisdk.listener.GizDeviceSchedulerListener;
 import com.yaokan.sdk.wifi.YKSchedulerCenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SchedulerListActivity extends BaseActivity {
 

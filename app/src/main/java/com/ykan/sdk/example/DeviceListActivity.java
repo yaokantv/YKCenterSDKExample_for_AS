@@ -1,16 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.gizwits.gizwifisdk.api.GizWifiDevice;
-import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
-import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
-import com.yaokan.sdk.utils.Logger;
-import com.yaokan.sdk.utils.Utility;
-import com.yaokan.sdk.wifi.DeviceManager;
-import com.yaokan.sdk.wifi.GizWifiCallBack;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +13,17 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
+import com.yaokan.sdk.utils.Logger;
+import com.yaokan.sdk.utils.Utility;
+import com.yaokan.sdk.wifi.DeviceManager;
+import com.yaokan.sdk.wifi.GizWifiCallBack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeviceListActivity extends BaseActivity {
     private String TAG = DeviceListActivity.class.getSimpleName();
@@ -74,7 +74,7 @@ public class DeviceListActivity extends BaseActivity {
     private GizWifiCallBack mGizWifiCallBack = new GizWifiCallBack() {
         @Override
         public void discoveredrCb(GizWifiErrorCode result,
-                                  java.util.List<GizWifiDevice> deviceList) {
+                                  List<GizWifiDevice> deviceList) {
             Logger.d(TAG,
                     "discoveredrCb -> deviceList size:" + deviceList.size()
                             + "  result:" + result);
