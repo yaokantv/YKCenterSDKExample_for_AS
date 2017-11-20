@@ -28,6 +28,7 @@ import com.yaokan.sdk.ir.YkanIRInterfaceImpl;
 import com.yaokan.sdk.model.BaseResult;
 import com.yaokan.sdk.model.Brand;
 import com.yaokan.sdk.model.BrandResult;
+import com.yaokan.sdk.model.DeviceDataStatus;
 import com.yaokan.sdk.model.DeviceType;
 import com.yaokan.sdk.model.DeviceTypeResult;
 import com.yaokan.sdk.model.KeyCode;
@@ -35,10 +36,13 @@ import com.yaokan.sdk.model.MatchRemoteControl;
 import com.yaokan.sdk.model.MatchRemoteControlResult;
 import com.yaokan.sdk.model.RemoteControl;
 import com.yaokan.sdk.model.YKError;
+import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.DeviceManager;
+import com.yaokan.sdk.wifi.listener.LearnCodeListener;
+import com.ykan.sdk.example.other.AnimStudy;
 
 import org.json.JSONException;
 
@@ -47,7 +51,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class YKCodeAPIActivity extends Activity implements View.OnClickListener {
+public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
 
     private ProgressDialogUtils dialogUtils;
 
@@ -85,6 +89,9 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
 
     private ArrayAdapter<String> typeAdapter, brandAdapter, remoteAdapter;
     private DeviceController driverControl = null;
+
+    private String study433_315_key = "";
+    protected AnimStudy animStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,28 +131,58 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                 driverControl.sendNightLight();
             }
         });
-        driverControl.setOnTrunkReceiveListener(new OnTrunkReceiveListener() {
-            @Override
-            public void onTrunkReceive(byte[] data) {
-                if (data != null && data.length > 0) {
-                    tvTrunkReceive.setText(Utility.bytesToHexString(data));
-                }
-            }
-        });
-        findViewById(R.id.trunk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String data = etTrunk.getText().toString();
-                if (!TextUtils.isEmpty(data)) {
-                    tvTrunkSend.setText(data);
-                    driverControl.sendTrunk(data.getBytes());
-                }
+        //-----------------   小苹果2代新增的功能start  -------------------------
+        if (YkanSDKManager.isAppleVersion2(YKCodeAPIActivity.this, currGizWifiDevice)) {
+            findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);
+            findViewById(R.id.sc_trunk).setVisibility(View.VISIBLE);
 
-            }
-        });
+            driverControl.setOnTrunkReceiveListener(new OnTrunkReceiveListener() {
+                @Override
+                public void onTrunkReceive(byte[] data) {
+                    if (data != null && data.length > 0) {
+                        tvTrunkReceive.setText(Utility.bytesToHexString(data));
+                    }
+                }
+            });
+            findViewById(R.id.trunk).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String data = etTrunk.getText().toString();
+                    if (!TextUtils.isEmpty(data)) {
+                        tvTrunkSend.setText(data);
+                        driverControl.sendTrunk(data.getBytes());
+                    }
+
+                }
+            });
+            //-------------------    433/315 模块start   ----------------------
+            findViewById(R.id.study_433_315).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!TextUtils.isEmpty(study433_315_key)) {
+                        driverControl.send433(study433_315_key);
+                    } else {
+                        Toast.makeText(YKCodeAPIActivity.this, "您还没学习到码值，长按按钮进入433/315学习模式", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            findViewById(R.id.study_433_315).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    findViewById(R.id.study_433_315).setTag("small_square");
+                    animStudy.startAnim(findViewById(R.id.study_433_315));
+                    driverControl.startLearn433or315();
+                    return true;
+                }
+            });
+            driverControl.initLearn(this);
+            //-------------------    433/315 模块 end   ----------------------
+            //-----------------   小苹果2代新增的功能end  -------------------------
+        }
     }
 
     private void initView() {
+        animStudy = new AnimStudy(this);
         dialogUtils = new ProgressDialogUtils(this);
         etTrunk = (EditText) findViewById(R.id.et_trunk);
         tvDevice = (TextView) findViewById(R.id.tv_device);
@@ -296,6 +333,26 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
                 break;
             default:
                 new DownloadThread(v.getId()).start();
+                break;
+        }
+    }
+
+    @Override
+    public void didReceiveData(DeviceDataStatus dataStatus, String data) {
+        switch (dataStatus) {
+            case DATA_LEARNING_SUCCESS_315://学习成功
+            case DATA_LEARNING_SUCCESS_433://学习成功
+                study433_315_key = data;//data 表示学习接收到的数据
+                animStudy.stopAnim(1);
+                Toast.makeText(getApplicationContext(), "学习成功", Toast.LENGTH_SHORT).show();
+                break;
+            case DATA_LEARNING_FAILED://学习失败
+                Logger.d(TAG, "学习失败");
+                animStudy.stopAnim(1);
+                Toast.makeText(getApplicationContext(), "学习失败", Toast.LENGTH_SHORT).show();
+                driverControl.learnStop433or315();
+                break;
+            default:
                 break;
         }
     }
@@ -474,6 +531,12 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener 
         finish();
     }
 
-    ;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (driverControl != null) {
+            driverControl.learnStop433or315();
+            driverControl.learnStop();
+        }
+    }
 }

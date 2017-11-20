@@ -2,39 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-     <TextView
-            android:id="@+id/tvMAC"
+    <TextView
+        android:id="@+id/tvMAC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/night"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-     
-     <Button
-         android:id="@+id/night"
-         android:layout_marginLeft="45dp"
-         android:text="小夜灯"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" />
-     <GridView 
-         android:id="@+id/codeGridView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginBottom="3dp"
-         android:layout_marginLeft="45dp"
-         android:layout_marginRight="45dp"
-         android:layout_marginTop="3dp"
-         android:fadingEdge="none"
-         android:focusable="false"
-         android:horizontalSpacing="5dp"
-         android:listSelector="@android:color/transparent"
-         android:numColumns="3"
-         android:overScrollMode="never"
-         android:scrollX="0dp"
-         android:scrollbarStyle="insideInset"
-         android:scrollbars="none"
-         android:verticalSpacing="10dp" 
-         />
-     
+            android:layout_marginLeft="45dp"
+            android:text="小夜灯" />
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/codeGridView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="3dp"
+        android:fadingEdge="none"
+        android:focusable="false"
+        android:horizontalSpacing="5dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:scrollX="0dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="none"
+        android:verticalSpacing="10dp" />
+
 </LinearLayout>

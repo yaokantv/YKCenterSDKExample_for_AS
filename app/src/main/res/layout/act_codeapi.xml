@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#999"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -159,7 +160,25 @@
         android:text="定时任务列表"
         android:textSize="12sp" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/study_433_315"
+        android:padding="5dp"
+        android:layout_below="@id/wifitest"
+        android:layout_toRightOf="@+id/scheduler_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/yk_ctrl_small_square"
+        android:gravity="center"
+        android:text="学习433/315"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
     <ScrollView
+        android:id="@+id/sc_trunk"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/scheduler_list">
@@ -222,18 +241,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
-                    android:textColor="@android:color/black"
                     android:layout_weight="1"
-                    android:background="@drawable/shape" />
+                    android:background="@drawable/shape"
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:id="@+id/tv_trunk_receive"
-                    android:textColor="@android:color/black"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape" />
+                    android:background="@drawable/shape"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

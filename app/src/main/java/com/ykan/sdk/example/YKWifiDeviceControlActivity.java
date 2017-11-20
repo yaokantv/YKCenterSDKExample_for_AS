@@ -76,9 +76,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
     JsonParser jsonParser = new JsonParser();
 
     private boolean isStudy = false;
-//    private int tid = 0;
-//    private int bid = 0;
-//    private String rid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +208,13 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        driverControl.learnStop();
+        driverControl.learnStop433or315();
+    }
+
     /**
      * 接收intent传过来的数据
      */
@@ -220,9 +224,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
         rcCommand = intent.getStringExtra("rcCommand");
         isStudy = intent.getBooleanExtra("type", false);
         control = new JsonParser().parseObjecta(intent.getStringExtra("remoteControl"), RemoteControl.class);
-//        tid = intent.getIntExtra("tid", 0);
-//        bid = intent.getIntExtra("bid", 0);
-//        rid = intent.getStringExtra("rid");
     }
 
 
@@ -299,6 +300,7 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
                 Logger.d(TAG, "学习失败");
                 animStudy.stopAnim(1);
                 Toast.makeText(getApplicationContext(), "学习失败", Toast.LENGTH_SHORT).show();
+                driverControl.learnStop();
                 break;
             case DATA_SEND_OK:
                 if (data != null && data.startsWith("YK")) {
