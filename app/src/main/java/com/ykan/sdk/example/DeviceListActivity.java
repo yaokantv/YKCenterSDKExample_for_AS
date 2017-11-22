@@ -55,9 +55,8 @@ public class DeviceListActivity extends BaseActivity {
                 intent.putExtra("GizWifiDevice", wifiDevices.get(position));
                 // 绑定
                 if (!Utility.isEmpty(mGizWifiDevice) && !mGizWifiDevice.isBind()) {
-                    mDeviceManager.bindRemoteDevice(mGizWifiDevice.getMacAddress());
+                    mDeviceManager.bindRemoteDevice(mGizWifiDevice);
                 }
-
                 startActivity(intent);
             }
         });

@@ -132,7 +132,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
             }
         });
         //-----------------   小苹果2代新增的功能start  -------------------------
-        if (YkanSDKManager.isAppleVersion2(YKCodeAPIActivity.this, currGizWifiDevice)) {
+        if (YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
             findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);
             findViewById(R.id.sc_trunk).setVisibility(View.VISIBLE);
 

@@ -35,7 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".YKCodeAPIActivity" />
+        <activity
+            android:name=".YKCodeAPIActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:configChanges="orientation|keyboardHidden" />
         <activity android:name=".YKWifiConfigActivity" />
         <activity android:name=".YKWifiDeviceControlActivity" />
         <activity android:name=".AirControlActivity" />
