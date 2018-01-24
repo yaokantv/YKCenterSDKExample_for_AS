@@ -1,5 +1,12 @@
 package com.ykan.sdk.example;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,13 +50,7 @@ import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.DeviceManager;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.ykan.sdk.example.other.OneKeyMatchActivity;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
 
@@ -91,6 +92,8 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     private DeviceController driverControl = null;
 
     private String study433_315_key = "";
+    private String studyKey = "02UGu+Ph01n8QYmtch2ZeSamsYZu4NGxa+SYk736OHXCeHwjBJFnxjR4evQyiJkmsVT8yfzJ576YHznuZRhTXCXUNTGF0L5v3OZWHbPbilAVOhlU6NLO2/0wgmTv1emdxpAbA/fVL2c+pi7WNoOc1PPkky46urVxSsVAxVujQeQoUJYzbs6n2vvEBS4EgTDXgT4KaVoDkOwN8r3Iww9zKHbfvZn3qJtth3LCzAZjN8UNg5vzS4tReF/p9NMDSXLNCywvnHtXEhS/aMkjs4UarXGw==";
+
     protected AnimStudy animStudy;
 
     @Override
@@ -125,10 +128,34 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
         }
         //小苹果 小夜灯
         driverControl = new DeviceController(getApplicationContext(), currGizWifiDevice, null);
+        //设置学习回调
+        driverControl.initLearn(this);
+
+        findViewById(R.id.study).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(studyKey)) {
+                    driverControl.sendCMD(studyKey);
+                } else {
+                    Toast.makeText(YKCodeAPIActivity.this, "您还没学习到码值，长按按钮进入学习模式", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        findViewById(R.id.study).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                findViewById(R.id.study).setTag("small_square");
+                animStudy.startAnim(findViewById(R.id.study));
+                driverControl.startLearn();
+                return true;
+            }
+        });
+
         findViewById(R.id.night).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 driverControl.sendNightLight();
+//                driverControl.lightTest();
             }
         });
         //-----------------   小苹果2代新增的功能start  -------------------------
@@ -175,7 +202,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     return true;
                 }
             });
-            driverControl.initLearn(this);
             //-------------------    433/315 模块 end   ----------------------
             //-----------------   小苹果2代新增的功能end  -------------------------
         }
@@ -275,6 +301,21 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.one_key_match:
+                if (currDeviceType != null && currBrand != null) {
+                    Intent intent = new Intent(this, OneKeyMatchActivity.class);
+                    intent.putExtra("tid", currDeviceType.getTid());
+                    intent.putExtra("type", currDeviceType.getName());
+                    intent.putExtra("bid", currBrand.getBid());
+                    intent.putExtra("brand", currBrand.getName());
+                    intent.putExtra("GizWifiDevice", currGizWifiDevice);
+                    currGizWifiDevice = (GizWifiDevice) getIntent().getParcelableExtra(
+                            "GizWifiDevice");
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "请获取设备品牌", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.match:
                 if (currRemoteControl != null) {
                     if (currRemoteControl.getRcCommand() != null && currRemoteControl.getRcCommand().size() > 0) {
@@ -305,7 +346,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 startActivity(intent1);
                 break;
             case R.id.wifitest:
-            case R.id.study:
                 // 进入遥控控制面板
                 Log.d(TAG, "remoteControl:" + remoteControl);
                 if (remoteControl == null) {
@@ -314,22 +354,13 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     return;
                 }
                 Intent intent = new Intent();
-                intent.putExtra("type", v.getId() == R.id.study ? true : false);
-//                intent.putExtra("tid", currDeviceType.getTid());
-//                intent.putExtra("bid", currBrand.getBid());
-//                intent.putExtra("rid", currRemoteControl.getRid());
                 JsonParser jsonParser = new JsonParser();
                 int airTid = 7;// 空调
                 if (remoteControl.gettId() == airTid) {
-                    if (v.getId() == R.id.study) {
-                        Toast.makeText(this, "空调不支持学习", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     toAirControlActivity(intent, jsonParser);
                 } else {
                     toYKWifiDeviceControlActivity(intent, jsonParser);
                 }
-
                 break;
             default:
                 new DownloadThread(v.getId()).start();
@@ -340,6 +371,11 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     @Override
     public void didReceiveData(DeviceDataStatus dataStatus, String data) {
         switch (dataStatus) {
+            case DATA_LEARNING_SUCCESS:
+                studyKey = data;//data 表示学习接收到的数据
+                animStudy.stopAnim(1);
+                Toast.makeText(getApplicationContext(), "学习成功", Toast.LENGTH_SHORT).show();
+                break;
             case DATA_LEARNING_SUCCESS_315://学习成功
             case DATA_LEARNING_SUCCESS_433://学习成功
                 study433_315_key = data;//data 表示学习接收到的数据

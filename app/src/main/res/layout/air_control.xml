@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tvMAC"
+        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -24,12 +26,14 @@
             android:id="@+id/power_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
             android:text="电源开关" />
 
         <Button
             android:id="@+id/mode_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -38,6 +42,7 @@
 
         <Button
             android:id="@+id/temp_add_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -46,6 +51,7 @@
 
         <Button
             android:id="@+id/temp_rdc_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -62,6 +68,7 @@
 
         <Button
             android:id="@+id/wspeed_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -70,6 +77,7 @@
 
         <Button
             android:id="@+id/tbspeed_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -78,6 +86,7 @@
 
         <Button
             android:id="@+id/lrwspped_btn"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

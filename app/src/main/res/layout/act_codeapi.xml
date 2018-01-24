@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#999"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -41,7 +40,7 @@
             android:layout_toRightOf="@id/getDeviceType" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/llBrandByType"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -53,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_weight="1"
             android:onClick="onClick"
             android:text="获取设备品牌"
             android:textSize="12sp" />
@@ -64,8 +64,19 @@
             android:layout_alignBottom="@id/getBrandByType"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/getBrandByType" />
-    </RelativeLayout>
+            android:layout_toRightOf="@id/getBrandByType"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/one_key_match"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="一键匹配"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 
     <LinearLayout
@@ -129,16 +140,30 @@
         android:text="遥控码测试"
         android:textSize="12sp" />
 
-    <Button
+    <!--<Button-->
+    <!--android:id="@+id/study"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/getFastMatched"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_toRightOf="@+id/wifitest"-->
+    <!--android:onClick="onClick"-->
+    <!--android:text="学习功能"-->
+    <!--android:textSize="12sp" />-->
+    <TextView
         android:id="@+id/study"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/getFastMatched"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/wifitest"
-        android:onClick="onClick"
+        android:background="@drawable/yk_ctrl_small_square"
+        android:gravity="center"
+        android:padding="5dp"
         android:text="学习功能"
-        android:textSize="12sp" />
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/night"
@@ -161,27 +186,27 @@
         android:textSize="12sp" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/study_433_315"
-        android:padding="5dp"
-        android:layout_below="@id/wifitest"
-        android:layout_toRightOf="@+id/scheduler_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/wifitest"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/scheduler_list"
         android:background="@drawable/yk_ctrl_small_square"
         android:gravity="center"
+        android:padding="5dp"
         android:text="学习433/315"
-        android:textColor="@android:color/white"
-        android:textSize="15sp" />
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/sc_trunk"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/scheduler_list">
+        android:layout_below="@id/scheduler_list"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,10 +1,7 @@
 package com.ykan.sdk.example;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
@@ -22,14 +19,17 @@ import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class AirControlActivity extends BaseActivity implements IDeviceControllerListener, View.OnClickListener {
     protected static final String TAG = AirControlActivity.class.getSimpleName();
 
     /**
-     * The tv MAC
+     * The tv MAC test2!!！！
      */
     private TextView tvMAC, tv_show;
 

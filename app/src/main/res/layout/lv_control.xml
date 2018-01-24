@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_rc_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="123123" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_on"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/yk_ctrl_small_square"
+            android:gravity="center"
+            android:text="@string/power_off"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_off"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_on"
+            android:background="@drawable/yk_ctrl_small_square"
+            android:gravity="center"
+            android:text="@string/power_on"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btn_s_off"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_off"
+            android:background="@drawable/yk_ctrl_small_square"
+            android:gravity="center"
+            android:text="@string/sweep_off"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btn_s_on"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_s_off"
+            android:background="@drawable/yk_ctrl_small_square"
+            android:gravity="center"
+            android:text="@string/sweep_on"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/dl"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_s_on"
+            android:gravity="center"
+            android:lines="2"
+            android:text="下载完整码库"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

@@ -8,6 +8,7 @@
     <TextView
         android:id="@+id/tv_item"
         android:layout_width="200dp"
+        android:textColor="#000"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
@@ -16,6 +17,7 @@
     <Button
         android:id="@+id/btn_item"
         android:layout_width="60dp"
+        android:textColor="#fff"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/tv_item"
@@ -24,6 +26,7 @@
     <Button
         android:id="@+id/btn_delete"
         android:layout_width="60dp"
+        android:textColor="#000"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/btn_item"

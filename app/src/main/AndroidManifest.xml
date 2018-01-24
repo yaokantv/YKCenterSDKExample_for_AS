@@ -46,9 +46,10 @@
 
         <meta-data
             android:name="yk_key"
-            android:value="yk" />
+            android:value="" />
         <!-- yk_key需要向我公司申请 格式为：ykxxxxxx -->
         <activity android:name=".SchedulerListActivity"></activity>
+        <activity android:name=".other.OneKeyMatchActivity" />
     </application>
 
 </manifest>

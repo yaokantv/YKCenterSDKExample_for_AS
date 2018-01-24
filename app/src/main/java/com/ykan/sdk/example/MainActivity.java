@@ -94,6 +94,11 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
 
     private void initListener() {
         DeviceManager.instanceDeviceManager(getApplicationContext()).setGizWifiCallBack(new GizWifiCallBack() {
+            @Override
+            public void didTransAnonymousUser(GizWifiErrorCode result) {
+                super.didTransAnonymousUser(result);
+            }
+
             /** 用于用户登录的回调 */
             @Override
             public void userLoginCb(GizWifiErrorCode result, String uid, String token) {

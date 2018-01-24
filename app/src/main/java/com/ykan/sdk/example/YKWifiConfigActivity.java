@@ -1,5 +1,8 @@
 package com.ykan.sdk.example;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -22,9 +25,6 @@ import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.yaokan.sdk.giz.net.NetUtils;
 import com.yaokan.sdk.wifi.DeviceConfig;
 import com.yaokan.sdk.wifi.listener.IDeviceConfigListener;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class YKWifiConfigActivity extends Activity implements View.OnClickListener,IDeviceConfigListener {
 	
