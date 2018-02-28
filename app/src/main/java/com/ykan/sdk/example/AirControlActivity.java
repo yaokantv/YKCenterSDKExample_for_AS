@@ -14,6 +14,11 @@ import com.yaokan.sdk.model.AirV1Command;
 import com.yaokan.sdk.model.AirV3Command;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
+import com.yaokan.sdk.model.kyenum.Mode;
+import com.yaokan.sdk.model.kyenum.Speed;
+import com.yaokan.sdk.model.kyenum.Temp;
+import com.yaokan.sdk.model.kyenum.WindH;
+import com.yaokan.sdk.model.kyenum.WindV;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
@@ -100,6 +105,18 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
         if (null != device) {
             tvMAC.setText("MAC: " + device.getMacAddress().toString());
         }
+
+        findViewById(R.id.get_code).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //注意！！！！注意！！！！注意！！！！注意！！！！
+                //此方法是从SDK抽离出来的，不参与onRefreshUI（）的UI逻辑，需要用户自己实现。
+                KeyCode keyCode = airEvent.getAirCode(Mode.HOT, Speed.S1, WindV.ON, WindH.ON, Temp.T29);
+                if (keyCode != null) {
+                    driverControl.sendCMD(keyCode.getSrcCode());
+                }
+            }
+        });
     }
 
     private void setOnClickListener() {
