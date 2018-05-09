@@ -1,7 +1,10 @@
 package com.ykan.sdk.example;
 
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
@@ -24,23 +27,14 @@ import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AirControlActivity extends BaseActivity implements IDeviceControllerListener, View.OnClickListener {
     protected static final String TAG = AirControlActivity.class.getSimpleName();
 
-    /**
-     * The tv MAC test2!!！！
-     */
     private TextView tvMAC, tv_show;
 
-    /**
-     * The GizWifiDevice device
-     */
     private GizWifiDevice device;
 
     private HashMap<String, KeyCode> codeDatas = new HashMap<String, KeyCode>();
@@ -138,13 +132,6 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 airEvent = new AirV1Command(codeDatas);
             }
         }
-//        Map.Entry<String,KeyCode> entry;
-//        for(Iterator iterator = codeDatas.entrySet().iterator();iterator.hasNext();){
-//            entry = (Map.Entry<String, KeyCode>) iterator.next();
-//            entry.getKey();
-//            YourKeyCode yourKeyCode = new YourKeyCode();
-//            yourKeyCode.setSrcCode(entry.getValue().getSrcCode());
-//        }
         return airEvent;
     }
 
@@ -177,14 +164,10 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 mKeyCode = airEvent.getNextValueByCatogery(AirConCatogery.WindLeft);
                 break;
             case R.id.temp_add_btn:
-                if (airEvent.modeHasTemp()) {
                     mKeyCode = airEvent.getNextValueByCatogery(AirConCatogery.Temp);
-                }
                 break;
             case R.id.temp_rdc_btn:
-                if (airEvent.modeHasTemp()) {
                     mKeyCode = airEvent.getForwardValueByCatogery(AirConCatogery.Temp);
-                }
                 break;
             default:
                 break;
@@ -231,6 +214,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
         if (GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
             Logger.d(TAG, "获取设备信息 : hardwareInfo :" + hardwareInfo);
         } else {
+
         }
     }
 

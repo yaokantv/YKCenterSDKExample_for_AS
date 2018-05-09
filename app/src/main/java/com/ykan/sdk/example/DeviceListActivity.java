@@ -2,6 +2,8 @@ package com.ykan.sdk.example;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,38 +41,49 @@ public class DeviceListActivity extends BaseActivity {
         setContentView(R.layout.act_device_list);
         mDeviceManager = DeviceManager
                 .instanceDeviceManager(getApplicationContext());
-        mDeviceManager.setGizWifiCallBack(mGizWifiCallBack);
+
         initView();
     }
 
-    private void initView() {
-        lvDevice = (ListView) findViewById(R.id.lv_device);
-        lvDevice.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(DeviceListActivity.this, YKCodeAPIActivity.class);
-                GizWifiDevice mGizWifiDevice = wifiDevices.get(position);
-                intent.putExtra("GizWifiDevice", wifiDevices.get(position));
-                // 绑定
-                if (!Utility.isEmpty(mGizWifiDevice) && !mGizWifiDevice.isBind()) {
-                    mDeviceManager.bindRemoteDevice(mGizWifiDevice);
-                }
-                startActivity(intent);
-            }
-        });
-        adapter = new DeviceAdapter();
-        lvDevice.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        update(mDeviceManager.getCanUseGizWifiDevice());
-    }
 
     private GizWifiCallBack mGizWifiCallBack = new GizWifiCallBack() {
+
+        @Override
+        public void didUnbindDeviceCd(GizWifiErrorCode result, String did) {
+            super.didUnbindDeviceCd(result, did);
+            if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+                // 解绑成功
+                Logger.d(TAG, "解除绑定成功");
+            } else {
+                // 解绑失败
+                Logger.d(TAG, "解除绑定失败");
+            }
+        }
+
+        @Override
+        public void didBindDeviceCd(GizWifiErrorCode result, String did) {
+            super.didBindDeviceCd(result, did);
+            if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+                // 绑定成功
+                Logger.d(TAG, "绑定成功");
+            } else {
+                // 绑定失败
+                Logger.d(TAG, "绑定失败");
+            }
+        }
+
+        @Override
+        public void didSetSubscribeCd(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
+            super.didSetSubscribeCd(result, device, isSubscribed);
+            if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+                // 解绑成功
+                Logger.d(TAG, (isSubscribed ? "订阅" : "取消订阅") + "成功");
+            } else {
+                // 解绑失败
+                Logger.d(TAG, "订阅失败");
+            }
+        }
+
         @Override
         public void discoveredrCb(GizWifiErrorCode result,
                                   List<GizWifiDevice> deviceList) {
@@ -89,6 +102,46 @@ public class DeviceListActivity extends BaseActivity {
 
         }
     };
+
+    private void initView() {
+        lvDevice = (ListView) findViewById(R.id.lv_device);
+        lvDevice.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(DeviceListActivity.this, YKCodeAPIActivity.class);
+                final GizWifiDevice mGizWifiDevice = wifiDevices.get(position);
+                intent.putExtra("GizWifiDevice", wifiDevices.get(position));
+                // 绑定
+                if (!Utility.isEmpty(mGizWifiDevice) && !mGizWifiDevice.isBind()) {
+                    mDeviceManager.bindRemoteDevice(mGizWifiDevice);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDeviceManager.setSubscribe(mGizWifiDevice, true);
+                        }
+                    }, 1000);
+                }
+                startActivity(intent);
+            }
+        });
+        adapter = new DeviceAdapter();
+        lvDevice.setAdapter(adapter);
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDeviceManager.setGizWifiCallBack(mGizWifiCallBack);
+        update(mDeviceManager.getCanUseGizWifiDevice());
+    }
 
     private String getBindInfo(boolean isBind) {
         String strReturn = "";
@@ -202,6 +255,9 @@ public class DeviceListActivity extends BaseActivity {
                         update(mDeviceManager.getCanUseGizWifiDevice());
                     } else {
                         toast("该设备未绑定");
+                    }
+                    if (mGizWifiDevice.isSubscribed()) {
+                        mDeviceManager.setSubscribe(mGizWifiDevice, false);
                     }
 
                 }

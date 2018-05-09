@@ -1,12 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.yaokan.sdk.api.JsonParser;
 import com.yaokan.sdk.api.YkanSDKManager;
 import com.yaokan.sdk.ir.OnTrunkReceiveListener;
@@ -48,9 +43,20 @@ import com.yaokan.sdk.utils.ProgressDialogUtils;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.DeviceManager;
+import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
 import com.ykan.sdk.example.other.OneKeyMatchActivity;
+
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
 
@@ -95,6 +101,9 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     private String studyKey = "02UGu+Ph01n8QYmtch2ZeSamsYZu4NGxa+SYk736OHXCeHwjBJFnxjR4evQyiJkmsVT8yfzJ576YHznuZRhTXCXUNTGF0L5v3OZWHbPbilAVOhlU6NLO2/0wgmTv1emdxpAbA/fVL2c+pi7WNoOc1PPkky46urVxSsVAxVujQeQoUJYzbs6n2vvEBS4EgTDXgT4KaVoDkOwN8r3Iww9zKHbfvZn3qJtth3LCzAZjN8UNg5vzS4tReF/p9NMDSXLNCywvnHtXEhS/aMkjs4UarXGw==";
 
     protected AnimStudy animStudy;
+    TextView textView;
+    StringBuffer stringBuffer = new StringBuffer();
+    SimpleDateFormat simpleFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,8 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
         ykanInterface = new YkanIRInterfaceImpl(getApplicationContext());
         // 遥控云数据接口分装对象对象
         ykanInterface = new YkanIRInterfaceImpl(getApplicationContext());
+        textView = (TextView) findViewById(R.id.showText);
+        simpleFormatter = new SimpleDateFormat("HH:mm:ss");
         initView();
         initDevice();
         List<GizWifiDevice> gizWifiDevices = DeviceManager
@@ -127,7 +138,23 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
             }
         }
         //小苹果 小夜灯
-        driverControl = new DeviceController(getApplicationContext(), currGizWifiDevice, null);
+        driverControl = new DeviceController(getApplicationContext(), currGizWifiDevice, new IDeviceControllerListener() {
+            @Override
+            public void didUpdateNetStatus(GizWifiDevice device, GizWifiDeviceNetStatus netStatus) {
+                stringBuffer.append("time" + simpleFormatter.format(new Date()) + "\n" + "mac :" + device.getMacAddress() + " status:" + netStatus + "\n");
+                textView.setText(stringBuffer.toString());
+            }
+
+            @Override
+            public void didGetHardwareInfo(GizWifiErrorCode result, GizWifiDevice device, ConcurrentHashMap<String, String> hardwareInfo) {
+
+            }
+
+            @Override
+            public void didSetCustomInfo(GizWifiErrorCode result, GizWifiDevice device) {
+
+            }
+        });
         //设置学习回调
         driverControl.initLearn(this);
 
@@ -154,10 +181,25 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
         findViewById(R.id.night).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                driverControl.sendNightLight();
-//                driverControl.lightTest();
+//                DeviceManager.instanceDeviceManager(YKCodeAPIActivity.this).setGizWifiCallBack(new GizWifiCallBack() {
+//                    @Override
+//                    public void didTransAnonymousUser(GizWifiErrorCode result) {
+//                        super.didTransAnonymousUser(result);
+//                        if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+//                            Log.e(TAG, "转换成功 ");
+//                        } else {
+//                            Log.e(TAG, "转换失败 ");
+//                        }
+//                    }
+//                });
+//                DeviceManager.instanceDeviceManager(YKCodeAPIActivity.this).transAnonymousUser("13728855026", "Xy_123456");
+//                driverControl.sendNightLight();
+//                stringBuffer.append("time"+simpleFormatter.format(new Date())+"发送指令\n");
+//                textView.setText(stringBuffer.toString());
+                driverControl.lightTest();
             }
         });
+//        currGizWifiDevice.setCustomInfo("aaa","bbb");
         //-----------------   小苹果2代新增的功能start  -------------------------
         if (YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
             findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);

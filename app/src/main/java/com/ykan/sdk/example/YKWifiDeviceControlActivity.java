@@ -16,7 +16,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gizwits.gizwifisdk.api.GizDeviceScheduler;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
@@ -25,7 +24,6 @@ import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.google.gson.reflect.TypeToken;
 import com.yaokan.sdk.api.JsonParser;
-import com.yaokan.sdk.model.DeviceDataStatus;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
 import com.yaokan.sdk.utils.Logger;
@@ -34,8 +32,6 @@ import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.YKDeviceSchedulerCenterListener;
 import com.yaokan.sdk.wifi.YKSchedulerCenter;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
-import com.yaokan.sdk.wifi.listener.LearnCodeListener;
-import com.ykan.sdk.example.other.AnimStudy;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -43,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class YKWifiDeviceControlActivity extends Activity implements IDeviceControllerListener, LearnCodeListener {
+public class YKWifiDeviceControlActivity extends Activity implements IDeviceControllerListener {
 
     protected static final String TAG = YKWifiDeviceControlActivity.class.getSimpleName();
 
@@ -67,21 +63,16 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
 
     private DeviceController driverControl = null;
 
-    protected AnimStudy animStudy;
-
     private int currLearning = -1;
 
     RemoteControl control;
 
     JsonParser jsonParser = new JsonParser();
 
-    private boolean isStudy = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_control);
-        animStudy = new AnimStudy(this);
         initDevice();
         initView();
         YKSchedulerCenter.setListener(ykDeviceSchedulerCenterListener);
@@ -91,9 +82,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
         driverControl = new DeviceController(getApplicationContext(), device, this);
         //获取设备硬件相关信息
         driverControl.getDevice().getHardwareInfo();
-        if (isStudy) {//学习模式需要初始化
-            driverControl.initLearn(this);
-        }
         //修改设备显示名称
         driverControl.getDevice().setCustomInfo("alias", "遥控中心产品");
         tvMAC = (TextView) findViewById(R.id.tvMAC);
@@ -127,11 +115,7 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
                     String key = codeKeys.get(position);
                     KeyCode keyCode = codeDatas.get(key);
                     String code;
-                    if (isStudy) {
-                        code = keyCode.getLearnCode();//学习模式下学习到的code
-                    } else {
-                        code = keyCode.getSrcCode();//从Api中取到的code
-                    }
+                    code = keyCode.getSrcCode();//从Api中取到的code
                     if (!TextUtils.isEmpty(code))
                         driverControl.sendCMD(code);
                 }
@@ -142,17 +126,9 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent,
                                                View view, int position, long id) {
-                    if (isStudy) {
-                        currLearning = position;
-                        TextView keyTv = (TextView) view.findViewById(R.id.key_btn);
-                        keyTv.setTag("small_square");
-                        animStudy.startAnim(keyTv);
-                        driverControl.startLearn();    //开始学习。
-                    } else {
-                        String key = codeKeys.get(position);
-                        KeyCode keyCode = codeDatas.get(key);
-                        createScheduler(keyCode.getSrcCode());
-                    }
+                    String key = codeKeys.get(position);
+                    KeyCode keyCode = codeDatas.get(key);
+                    createScheduler(keyCode.getSrcCode());
                     return true;
                 }
 
@@ -222,7 +198,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
         Intent intent = getIntent();
         device = (GizWifiDevice) intent.getParcelableExtra("GizWifiDevice");
         rcCommand = intent.getStringExtra("rcCommand");
-        isStudy = intent.getBooleanExtra("type", false);
         control = new JsonParser().parseObjecta(intent.getStringExtra("remoteControl"), RemoteControl.class);
     }
 
@@ -282,37 +257,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
             default:
                 break;
         }
-    }
-
-    @Override
-    public void didReceiveData(DeviceDataStatus dataStatus, String data) {
-        // TODO Auto-generated method stub
-        switch (dataStatus) {
-            case DATA_LEARNING_SUCCESS://学习成功
-                String studyValue = data;//data 表示学习接收到的数据
-                KeyCode keyCode = codeDatas.get(codeKeys.get(currLearning));
-                keyCode.setLearnCode(studyValue);
-                Logger.d(TAG, "学习成功:" + studyValue);
-                animStudy.stopAnim(1);
-                Toast.makeText(getApplicationContext(), "学习成功", Toast.LENGTH_SHORT).show();
-                break;
-            case DATA_LEARNING_FAILED://学习失败
-                Logger.d(TAG, "学习失败");
-                animStudy.stopAnim(1);
-                Toast.makeText(getApplicationContext(), "学习失败", Toast.LENGTH_SHORT).show();
-                driverControl.learnStop();
-                break;
-            case DATA_SEND_OK:
-                if (data != null && data.startsWith("YK")) {
-                    Logger.d(TAG, "发送成功 " + data);
-                } else {
-
-                }
-                break;
-            default:
-                break;
-        }
-
     }
 
     @Override
