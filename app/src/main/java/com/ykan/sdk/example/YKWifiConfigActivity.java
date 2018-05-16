@@ -365,17 +365,11 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
             case GIZ_SDK_THREAD_CREATE_FAILED:
                 errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_THREAD_CREATE_FAILED);
                 break;
-            case GIZ_SDK_USER_ID_INVALID:
-                errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_USER_ID_INVALID);
-                break;
             case GIZ_SDK_TOKEN_INVALID:
                 errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_TOKEN_INVALID);
                 break;
             case GIZ_SDK_GROUP_ID_INVALID:
                 errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_GROUP_ID_INVALID);
-                break;
-            case GIZ_SDK_GROUPNAME_INVALID:
-                errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_GROUPNAME_INVALID);
                 break;
             case GIZ_SDK_GROUP_PRODUCTKEY_INVALID:
                 errorString = (String) ctx.getResources().getText(R.string.GIZ_SDK_GROUP_PRODUCTKEY_INVALID);

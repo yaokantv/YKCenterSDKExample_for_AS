@@ -196,7 +196,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
 //                driverControl.sendNightLight();
 //                stringBuffer.append("time"+simpleFormatter.format(new Date())+"发送指令\n");
 //                textView.setText(stringBuffer.toString());
-                driverControl.lightTest();
+                driverControl.sendNightLight();
             }
         });
 //        currGizWifiDevice.setCustomInfo("aaa","bbb");

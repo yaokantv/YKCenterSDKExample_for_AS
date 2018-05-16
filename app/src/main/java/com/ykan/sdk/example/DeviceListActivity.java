@@ -45,14 +45,9 @@ public class DeviceListActivity extends BaseActivity {
         initView();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        update(mDeviceManager.getCanUseGizWifiDevice());
-        mDeviceManager.setGizWifiCallBack(mGizWifiCallBack);
-    }
 
     private GizWifiCallBack mGizWifiCallBack = new GizWifiCallBack() {
+
         @Override
         public void didUnbindDeviceCd(GizWifiErrorCode result, String did) {
             super.didUnbindDeviceCd(result, did);
@@ -92,12 +87,17 @@ public class DeviceListActivity extends BaseActivity {
         @Override
         public void discoveredrCb(GizWifiErrorCode result,
                                   List<GizWifiDevice> deviceList) {
+            Logger.d(TAG,
+                    "discoveredrCb -> deviceList size:" + deviceList.size()
+                            + "  result:" + result);
             switch (result) {
                 case GIZ_SDK_SUCCESS:
+                    Logger.e(TAG, "load device  sucess");
                     update(deviceList);
                     break;
                 default:
                     break;
+
             }
 
         }
@@ -135,6 +135,13 @@ public class DeviceListActivity extends BaseActivity {
             super.handleMessage(msg);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDeviceManager.setGizWifiCallBack(mGizWifiCallBack);
+        update(mDeviceManager.getCanUseGizWifiDevice());
+    }
 
     private String getBindInfo(boolean isBind) {
         String strReturn = "";

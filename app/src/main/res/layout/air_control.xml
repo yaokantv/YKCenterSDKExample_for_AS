@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvMAC"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,43 +20,43 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/power_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="电源开关" />
+            android:text="电源开关"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/mode_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="模式" />
+            android:text="模式"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/temp_add_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="温度加" />
+            android:text="温度加"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/temp_rdc_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="温度减" />
+            android:text="温度减"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,35 +64,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/wspeed_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="风量" />
+            android:text="风量"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/tbspeed_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="上下扫风" />
+            android:text="上下扫风"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/lrwspped_btn"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/yk_ctrl_small_square"
-            android:text="左右扫风" />
+            android:text="左右扫风"
+            android:textColor="@android:color/white" />
     </LinearLayout>
+
     <Button
         android:id="@+id/get_code"
         android:layout_width="wrap_content"
@@ -101,6 +102,7 @@
         android:background="@drawable/yk_ctrl_small_square"
         android:text="获取指定码值"
         android:textColor="@android:color/white" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -108,7 +110,7 @@
         android:layout_marginTop="20dp"
         android:background="@android:color/white"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_show"
