@@ -94,6 +94,8 @@ public class DeviceListActivity extends BaseActivity {
                 case GIZ_SDK_SUCCESS:
                     Logger.e(TAG, "load device  sucess");
                     update(deviceList);
+//                    if(deviceList.get(0).getNetStatus()==GizWifiDeviceNetStatus.GizDeviceOffline)
+
                     break;
                 default:
                     break;

@@ -52,6 +52,9 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
 //        YkanSDKManager.custInit(this,false);
         // 设置Log信息是否打印
         YkanSDKManager.getInstance().setLogger(true);
+
+//        DeviceManager.instanceDeviceManager(this).setGizWifiCallBack(null);
+//        GizWifiSDK.sharedInstance().setListener(null);
     }
 
     @Override

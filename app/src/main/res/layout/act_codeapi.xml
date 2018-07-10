@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/tv_device"
         android:layout_width="wrap_content"
@@ -122,6 +123,28 @@
         android:onClick="onClick"
         android:text="获取遥控器数据"
         android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/download_code_to_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDataByBrand"
+        android:layout_toRightOf="@+id/getDetailByRCID"
+        android:onClick="onClick"
+        android:text="下载码库到设备"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/delete_device_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDataByBrand"
+        android:layout_toRightOf="@+id/download_code_to_device"
+        android:onClick="onClick"
+        android:text="删除设备码库"
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/getFastMatched"
@@ -286,8 +309,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_below="@id/scheduler_list">
+        android:layout_below="@id/scheduler_list"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/showText"

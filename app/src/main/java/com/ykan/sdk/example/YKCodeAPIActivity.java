@@ -152,7 +152,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
 
             @Override
             public void didSetCustomInfo(GizWifiErrorCode result, GizWifiDevice device) {
-
+                Log.e(TAG, result.toString());
             }
         });
         //设置学习回调
@@ -196,7 +196,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
 //                driverControl.sendNightLight();
 //                stringBuffer.append("time"+simpleFormatter.format(new Date())+"发送指令\n");
 //                textView.setText(stringBuffer.toString());
-                driverControl.sendNightLight();
+                driverControl.lightTest();
             }
         });
 //        currGizWifiDevice.setCustomInfo("aaa","bbb");
@@ -204,11 +204,13 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
         if (YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
             findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);
             findViewById(R.id.sc_trunk).setVisibility(View.VISIBLE);
-
+            findViewById(R.id.download_code_to_device).setVisibility(View.VISIBLE);
+            findViewById(R.id.delete_device_code).setVisibility(View.VISIBLE);
             driverControl.setOnTrunkReceiveListener(new OnTrunkReceiveListener() {
                 @Override
                 public void onTrunkReceive(byte[] data) {
                     if (data != null && data.length > 0) {
+                        Log.e("TTTT", Utility.bytesToHexString(data));
                         tvTrunkReceive.setText(Utility.bytesToHexString(data));
                     }
                 }
@@ -244,10 +246,49 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     return true;
                 }
             });
+            findViewById(R.id.download_code_to_device).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<String> codes = new ArrayList<>();
+                    codes.add("01ym+kFqcNrDziSw3UquVVHUwsc96CupJTtjLuODnem6EQrqZafOd6mnkT7W4o0PBT");
+                    codes.add(studyKey);
+                    int room = 0;//0-8之间
+                    int position = 0;//0-9之间
+                    for (String code : codes) {
+                        Message message = sendHandler.obtainMessage();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("size", codes.size());
+                        bundle.putInt("room", room);
+                        bundle.putInt("position", position);
+                        bundle.putString("code", code);
+                        message.what = 1;
+                        message.setData(bundle);
+                        sendHandler.sendMessageDelayed(message, position * 500);
+                        position++;
+                    }
+                }
+            });
+            findViewById(R.id.delete_device_code).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    driverControl.deleteDeviceCode(0);
+                }
+            });
             //-------------------    433/315 模块 end   ----------------------
             //-----------------   小苹果2代新增的功能end  -------------------------
         }
     }
+
+    Handler sendHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                Bundle bundle = msg.getData();
+                driverControl.saveCodeInDevice(bundle.getInt("size"), bundle.getInt("room"), bundle.getInt("position"), bundle.getString("code"));
+            }
+        }
+    };
 
     private void initView() {
         animStudy = new AnimStudy(this);
@@ -351,7 +392,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     intent.putExtra("bid", currBrand.getBid());
                     intent.putExtra("brand", currBrand.getName());
                     intent.putExtra("GizWifiDevice", currGizWifiDevice);
-                    currGizWifiDevice = (GizWifiDevice) getIntent().getParcelableExtra(
+                    currGizWifiDevice = getIntent().getParcelableExtra(
                             "GizWifiDevice");
                     startActivity(intent);
                 } else {
@@ -429,6 +470,9 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 animStudy.stopAnim(1);
                 Toast.makeText(getApplicationContext(), "学习失败", Toast.LENGTH_SHORT).show();
                 driverControl.learnStop433or315();
+                break;
+            case DATA_SAVE_SUCCESS:
+                Toast.makeText(getApplicationContext(), "写入成功", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

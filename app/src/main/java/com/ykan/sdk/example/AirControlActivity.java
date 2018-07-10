@@ -78,6 +78,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
             codeDatas = remoteControl.getRcCommand();
             airEvent = getAirEvent(codeDatas);
         }
+
     }
 
     private void initView() {
@@ -105,7 +106,9 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
             public void onClick(View v) {
                 //注意！！！！注意！！！！注意！！！！注意！！！！
                 //此方法是从SDK抽离出来的，不参与onRefreshUI（）的UI逻辑，需要用户自己实现。
-                KeyCode keyCode = airEvent.getAirCode(Mode.HOT, Speed.S1, WindV.ON, WindH.ON, Temp.T29);
+                KeyCode keyCode = airEvent.getAirCode(Mode.WIND, Speed.S0, WindV.OFF, WindH.OFF, Temp.T24);
+                KeyCode keyCode2 =  airEvent.getAirCode(Mode.WIND, Speed.S1, WindV.OFF, WindH.OFF, Temp.T24);
+                KeyCode keyCode3 =  airEvent.getAirCode(Mode.WIND, Speed.S2, WindV.OFF, WindH.OFF, Temp.T24);
                 if (keyCode != null) {
                     driverControl.sendCMD(keyCode.getSrcCode());
                 }
@@ -164,10 +167,10 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 mKeyCode = airEvent.getNextValueByCatogery(AirConCatogery.WindLeft);
                 break;
             case R.id.temp_add_btn:
-                    mKeyCode = airEvent.getNextValueByCatogery(AirConCatogery.Temp);
+                mKeyCode = airEvent.getNextValueByCatogery(AirConCatogery.Temp);
                 break;
             case R.id.temp_rdc_btn:
-                    mKeyCode = airEvent.getForwardValueByCatogery(AirConCatogery.Temp);
+                mKeyCode = airEvent.getForwardValueByCatogery(AirConCatogery.Temp);
                 break;
             default:
                 break;
