@@ -1,5 +1,15 @@
 package com.ykan.sdk.example;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,16 +57,6 @@ import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
 import com.ykan.sdk.example.other.OneKeyMatchActivity;
-
-import org.json.JSONException;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
 
@@ -199,13 +199,50 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 driverControl.lightTest();
             }
         });
+        findViewById(R.id.delete_device_code).setVisibility(View.VISIBLE);
+        findViewById(R.id.download_code_to_device).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> codes = new ArrayList<>();
+                codes.add("01ym+kFqcNrDziSw3UquVVHUwsc96CupJTtjLuODnem6EQrqZafOd6mnkT7W4o0PBT");
+                codes.add(studyKey);
+                int room = 0;
+                int position = 0;
+                for (String code : codes) {
+                    Message message = sendHandler.obtainMessage();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("size", codes.size());//遥控码数组的大小
+                    bundle.putInt("room", room);//下载到第几个场景0-8之间
+                    bundle.putInt("position", position);//场景中的第几位0-9之间
+                    bundle.putString("code", code);//码值
+                    message.what = 1;
+                    message.setData(bundle);
+                    sendHandler.sendMessageDelayed(message, position * 500);
+                    position++;
+                }
+            }
+        });
+        findViewById(R.id.delete_device_code).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //删除第几个场景0-8之间
+                driverControl.deleteScene(0);
+            }
+        });
+        findViewById(R.id.send_scene).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //发送第几个场景0-8之间
+                driverControl.sendScene(0);
+            }
+        });
 //        currGizWifiDevice.setCustomInfo("aaa","bbb");
         //-----------------   小苹果2代新增的功能start  -------------------------
         if (YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
             findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);
             findViewById(R.id.sc_trunk).setVisibility(View.VISIBLE);
             findViewById(R.id.download_code_to_device).setVisibility(View.VISIBLE);
-            findViewById(R.id.delete_device_code).setVisibility(View.VISIBLE);
+
             driverControl.setOnTrunkReceiveListener(new OnTrunkReceiveListener() {
                 @Override
                 public void onTrunkReceive(byte[] data) {
@@ -244,34 +281,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     animStudy.startAnim(findViewById(R.id.study_433_315));
                     driverControl.startLearn433or315();
                     return true;
-                }
-            });
-            findViewById(R.id.download_code_to_device).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<String> codes = new ArrayList<>();
-                    codes.add("01ym+kFqcNrDziSw3UquVVHUwsc96CupJTtjLuODnem6EQrqZafOd6mnkT7W4o0PBT");
-                    codes.add(studyKey);
-                    int room = 0;//0-8之间
-                    int position = 0;//0-9之间
-                    for (String code : codes) {
-                        Message message = sendHandler.obtainMessage();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("size", codes.size());
-                        bundle.putInt("room", room);
-                        bundle.putInt("position", position);
-                        bundle.putString("code", code);
-                        message.what = 1;
-                        message.setData(bundle);
-                        sendHandler.sendMessageDelayed(message, position * 500);
-                        position++;
-                    }
-                }
-            });
-            findViewById(R.id.delete_device_code).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    driverControl.deleteDeviceCode(0);
                 }
             });
             //-------------------    433/315 模块 end   ----------------------
@@ -606,7 +615,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     }
 
     private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0:
                     if (deviceType != null) {
