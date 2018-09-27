@@ -64,8 +64,6 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
 
     private DeviceController driverControl = null;
 
-    private int currLearning = -1;
-
     RemoteControl control;
 
     JsonParser jsonParser = new JsonParser();
