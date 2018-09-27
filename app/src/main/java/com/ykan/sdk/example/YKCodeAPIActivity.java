@@ -1,15 +1,5 @@
 package com.ykan.sdk.example;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,6 +37,7 @@ import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.MatchRemoteControl;
 import com.yaokan.sdk.model.MatchRemoteControlResult;
 import com.yaokan.sdk.model.RemoteControl;
+import com.yaokan.sdk.model.SendType;
 import com.yaokan.sdk.model.YKError;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
@@ -57,6 +48,16 @@ import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
 import com.ykan.sdk.example.other.OneKeyMatchActivity;
+
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
 
@@ -162,7 +163,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(studyKey)) {
-                    driverControl.sendCMD(studyKey);
+                    driverControl.sendCMD(studyKey, SendType.Infrared);
                 } else {
                     Toast.makeText(YKCodeAPIActivity.this, "您还没学习到码值，长按按钮进入学习模式", Toast.LENGTH_LONG).show();
                 }
@@ -204,8 +205,10 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 ArrayList<String> codes = new ArrayList<>();
-                codes.add("01ym+kFqcNrDziSw3UquVVHUwsc96CupJTtjLuODnem6EQrqZafOd6mnkT7W4o0PBT");
-                codes.add(studyKey);
+//                codes.add("010H0LcZx8VWVBEZd1E+5LELySvt1bSCvQDXtcLeX31eV2ARamsw/tpF+E+VeEnUIO");
+//                codes.add("010H0LcZx8VWVBEZd1E+5LEHn8RvEzEnHMBromunFrCZsFJbt2VMLWvLIQJHJEPXBz");
+//                codes.add("010H0LcZx8VWVBEZd1E+5LEHn8RvEzEnHMBromunFrCZsFJbt2VMLWvLIQJHJEPXBz");
+                codes.add("182609000136091E1E0B1E0A1E0A091E091E1E0B091F1E0A091E091E1E0B1E0A1E0A1E0A091E091F081F1E0A091F091E091E1E0A1E0A09000136091E1E0B1E0A1E0A091E091E1E0B091F1E0A091E091E1E0B1E0A1E0A1E0A091E091F081F1E0A091F091E091E1E0A1E0A09000136091E1E0B1E0A1E0A091E091E1E0B091F1E0A091E091E1E0B1E0A1E0A1E0A091E091F081F1E0A091F091E091E1E0A1E0A09000136091E1E0B1E0A1E0A091E091E1E0B091F1E0A091E091E1E0B1E0A1E0A1E0A091E091F081F1E0A091F091E091E1E0A1E0A");
                 int room = 0;
                 int position = 0;
                 for (String code : codes) {
@@ -258,7 +261,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     String data = etTrunk.getText().toString();
                     if (!TextUtils.isEmpty(data)) {
                         tvTrunkSend.setText(data);
-                        driverControl.sendTrunk(data.getBytes());
+                        driverControl.sendCMD(data, SendType.Trunk);
                     }
 
                 }
@@ -268,7 +271,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(study433_315_key)) {
-                        driverControl.send433(study433_315_key);
+                        driverControl.sendCMD(study433_315_key, SendType.RadioFrequency);
                     } else {
                         Toast.makeText(YKCodeAPIActivity.this, "您还没学习到码值，长按按钮进入433/315学习模式", Toast.LENGTH_LONG).show();
                     }
@@ -425,7 +428,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                         builder.setTitle("测试匹配").setItems(c, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                driverControl.sendCMD(sCode[which]);
+                                driverControl.sendCMD(sCode[which], SendType.Infrared);
                                 dialog.dismiss();
                             }
                         }).create().show();
@@ -567,7 +570,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 case R.id.getDetailByRCID:
                     if (!Utility.isEmpty(currRemoteControl)) {
                         ykanInterface
-                                .getRemoteDetails(currGizWifiDevice.getMacAddress(), currRemoteControl.getRid(), new YKanHttpListener() {
+                                .getRemoteDetails("5CCF7FB6C96B", currRemoteControl.getRid(), new YKanHttpListener() {
                                     @Override
                                     public void onSuccess(BaseResult baseResult) {
                                         if (baseResult != null) {
@@ -615,7 +618,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     }
 
     private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     if (deviceType != null) {

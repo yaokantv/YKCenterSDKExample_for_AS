@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yaokan.sdk.api.JsonParser;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
+import com.yaokan.sdk.model.SendType;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
@@ -117,7 +118,7 @@ public class YKWifiDeviceControlActivity extends Activity implements IDeviceCont
                     String code;
                     code = keyCode.getSrcCode();//从Api中取到的code
                     if (!TextUtils.isEmpty(code))
-                        driverControl.sendCMD(code);
+                        driverControl.sendCMD(code, SendType.Infrared);
                 }
             });
 

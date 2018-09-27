@@ -17,6 +17,7 @@ import com.yaokan.sdk.model.AirV1Command;
 import com.yaokan.sdk.model.AirV3Command;
 import com.yaokan.sdk.model.KeyCode;
 import com.yaokan.sdk.model.RemoteControl;
+import com.yaokan.sdk.model.SendType;
 import com.yaokan.sdk.model.kyenum.Mode;
 import com.yaokan.sdk.model.kyenum.Speed;
 import com.yaokan.sdk.model.kyenum.Temp;
@@ -110,7 +111,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 KeyCode keyCode2 =  airEvent.getAirCode(Mode.WIND, Speed.S1, WindV.OFF, WindH.OFF, Temp.T24);
                 KeyCode keyCode3 =  airEvent.getAirCode(Mode.WIND, Speed.S2, WindV.OFF, WindH.OFF, Temp.T24);
                 if (keyCode != null) {
-                    driverControl.sendCMD(keyCode.getSrcCode());
+                    driverControl.sendCMD(keyCode.getSrcCode(), SendType.Infrared);
                 }
             }
         });
@@ -176,7 +177,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
                 break;
         }
         if (!Utility.isEmpty(mKeyCode)) {
-            driverControl.sendCMD(mKeyCode.getSrcCode());
+            driverControl.sendCMD(mKeyCode.getSrcCode(), SendType.Infrared);
             onRefreshUI(airEvent.getCurrStatus());
         }
     }
