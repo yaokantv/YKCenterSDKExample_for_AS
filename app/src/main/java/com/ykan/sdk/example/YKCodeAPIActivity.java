@@ -570,7 +570,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                 case R.id.getDetailByRCID:
                     if (!Utility.isEmpty(currRemoteControl)) {
                         ykanInterface
-                                .getRemoteDetails("5CCF7FB6C96B", currRemoteControl.getRid(), new YKanHttpListener() {
+                                .getRemoteDetails(currGizWifiDevice.getMacAddress(), currRemoteControl.getRid(), new YKanHttpListener() {
                                     @Override
                                     public void onSuccess(BaseResult baseResult) {
                                         if (baseResult != null) {
