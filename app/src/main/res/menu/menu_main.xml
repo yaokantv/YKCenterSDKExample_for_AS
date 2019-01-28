@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".StepOneActivity">
+
+    <item
+        android:id="@+id/reset"
+        android:title="重置"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/reset_all"
+        android:title="重置所有"
+        app:showAsAction="never" />
+</menu>

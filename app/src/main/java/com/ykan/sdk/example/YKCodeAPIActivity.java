@@ -1,6 +1,15 @@
 package com.ykan.sdk.example;
 
-import android.app.Activity;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.json.JSONException;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,19 +56,10 @@ import com.yaokan.sdk.wifi.DeviceManager;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
 import com.yaokan.sdk.wifi.listener.LearnCodeListener;
 import com.ykan.sdk.example.other.AnimStudy;
+import com.ykan.sdk.example.other.DataHolder;
 import com.ykan.sdk.example.other.OneKeyMatchActivity;
 
-import org.json.JSONException;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-public class YKCodeAPIActivity extends Activity implements View.OnClickListener, LearnCodeListener {
+public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListener, LearnCodeListener {
 
     private ProgressDialogUtils dialogUtils;
 
@@ -105,6 +105,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     TextView textView;
     StringBuffer stringBuffer = new StringBuffer();
     SimpleDateFormat simpleFormatter;
+    String code = "01bIEWoUElwsc0EOomQFhKd+ZyLYvCDCm52Me9QqqlT/DGaLH/BmHOUJoTMa9+WxU6WTNpHgOjoTtK10ZuQLpLDdkX050C2UDScP8tJk9r/bQ=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -385,17 +386,28 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     private void toAirControlActivity(Intent intent, JsonParser jsonParser) {
         intent.setClass(this, AirControlActivity.class);
         intent.putExtra("GizWifiDevice", currGizWifiDevice);
-        try {
-            intent.putExtra("remoteControl", jsonParser.toJson(remoteControl));
-        } catch (JSONException e) {
-            Log.e(TAG, "JSONException:" + e.getMessage());
-        }
+        DataHolder.getInstance().putExtra(remoteControl);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.all_key_match:
+                if (currDeviceType != null && currBrand != null) {
+                    Intent intent = new Intent(this, AllKeyMatchActivity.class);
+                    intent.putExtra("tid", currDeviceType.getTid());
+                    intent.putExtra("type", currDeviceType.getName());
+                    intent.putExtra("bid", currBrand.getBid());
+                    intent.putExtra("brand", currBrand.getName());
+                    intent.putExtra("GizWifiDevice", currGizWifiDevice);
+                    currGizWifiDevice = getIntent().getParcelableExtra(
+                            "GizWifiDevice");
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "请获取设备品牌", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.one_key_match:
                 if (currDeviceType != null && currBrand != null) {
                     Intent intent = new Intent(this, OneKeyMatchActivity.class);
@@ -590,24 +602,6 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
                     }
                     Log.d(TAG, " getDetailByRCID result:" + result);
                     break;
-//                case R.id.getFastMatched:
-//                    ykanInterface
-//                            .getFastMatched(currGizWifiDevice.getMacAddress(), 87, 7,
-//                                    "1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24",
-//                                    new YKanHttpListener() {
-//                                        @Override
-//                                        public void onSuccess(BaseResult baseResult) {
-//                                            MatchRemoteControlResult rcFastMatched = (MatchRemoteControlResult) baseResult;
-//                                            result = rcFastMatched.toString();
-//                                            Log.d(TAG, " getFastMatched result:" + result);
-//                                        }
-//
-//                                        @Override
-//                                        public void onFail(YKError ykError) {
-//                                            Log.e(TAG, "ykError:" + ykError.toString());
-//                                        }
-//                                    });
-//                    break;
                 default:
                     break;
             }
@@ -618,7 +612,7 @@ public class YKCodeAPIActivity extends Activity implements View.OnClickListener,
     }
 
     private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0:
                     if (deviceType != null) {
