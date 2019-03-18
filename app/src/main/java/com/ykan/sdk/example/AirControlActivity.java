@@ -27,6 +27,7 @@ import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.Utility;
 import com.yaokan.sdk.wifi.DeviceController;
 import com.yaokan.sdk.wifi.listener.IDeviceControllerListener;
+import com.ykan.sdk.example.other.DataHolder;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +74,7 @@ public class AirControlActivity extends BaseActivity implements IDeviceControlle
         driverControl.getDevice().getHardwareInfo();
         //修改设备显示名称
         driverControl.getDevice().setCustomInfo("alias", "遥控中心产品");
-        remoteControl = jsonParser.parseObjecta(intent.getStringExtra("remoteControl"), RemoteControl.class);
+        remoteControl = DataHolder.getInstance().getExtra();
         if (!Utility.isEmpty(remoteControl)) {
             airVerSion = remoteControl.getVersion();
             codeDatas = remoteControl.getRcCommand();
