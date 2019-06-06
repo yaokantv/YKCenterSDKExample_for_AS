@@ -105,6 +105,12 @@ public class YKWifiConfigActivity extends Activity implements View.OnClickListen
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopConfig(false);
+    }
+
     /**
      * 启动配置遥控中心
      */

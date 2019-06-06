@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONException;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -114,7 +115,6 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
         // 遥控云数据接口分装对象对象
         ykanInterface = new YkanIRInterfaceImpl(getApplicationContext());
         // 遥控云数据接口分装对象对象
-        ykanInterface = new YkanIRInterfaceImpl(getApplicationContext());
         textView = (TextView) findViewById(R.id.showText);
         simpleFormatter = new SimpleDateFormat("HH:mm:ss");
         initView();
@@ -129,6 +129,7 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
     private void initDevice() {
         currGizWifiDevice = (GizWifiDevice) getIntent().getParcelableExtra(
                 "GizWifiDevice");
+
         if (currGizWifiDevice != null) {
             deviceId = currGizWifiDevice.getDid();
             tvDevice.setText(currGizWifiDevice.getProductName() + "("
@@ -242,7 +243,9 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
         });
 //        currGizWifiDevice.setCustomInfo("aaa","bbb");
         //-----------------   小苹果2代新增的功能start  -------------------------
-        if (YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
+
+        if ("小苹果2".equals(currGizWifiDevice.getProductName()) ||
+                YkanSDKManager.getLittleAppleVersion(YKCodeAPIActivity.this, currGizWifiDevice) >= 2) {
             findViewById(R.id.study_433_315).setVisibility(View.VISIBLE);
             findViewById(R.id.sc_trunk).setVisibility(View.VISIBLE);
             findViewById(R.id.download_code_to_device).setVisibility(View.VISIBLE);
@@ -386,6 +389,11 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
     private void toAirControlActivity(Intent intent, JsonParser jsonParser) {
         intent.setClass(this, AirControlActivity.class);
         intent.putExtra("GizWifiDevice", currGizWifiDevice);
+//        try {
+//            intent.putExtra("remoteControl", jsonParser.toJson(remoteControl));
+//        } catch (JSONException e) {
+//            Log.e(TAG, "JSONException:" + e.getMessage());
+//        }
         DataHolder.getInstance().putExtra(remoteControl);
         startActivity(intent);
     }
@@ -416,8 +424,7 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
                     intent.putExtra("bid", currBrand.getBid());
                     intent.putExtra("brand", currBrand.getName());
                     intent.putExtra("GizWifiDevice", currGizWifiDevice);
-                    currGizWifiDevice = getIntent().getParcelableExtra(
-                            "GizWifiDevice");
+                    currGizWifiDevice = getIntent().getParcelableExtra("GizWifiDevice");
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "请获取设备品牌", Toast.LENGTH_SHORT).show();

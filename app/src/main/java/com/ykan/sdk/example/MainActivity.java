@@ -16,6 +16,8 @@ import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.larksmart7618.sdk.communication.tools.commen.ToastTools;
 import com.yaokan.sdk.api.YkanSDKManager;
 import com.yaokan.sdk.ir.InitYkanListener;
+import com.yaokan.sdk.ir.YkanIRInterface;
+import com.yaokan.sdk.ir.YkanIRInterfaceImpl;
 import com.yaokan.sdk.model.YKUserAccountType;
 import com.yaokan.sdk.utils.Logger;
 import com.yaokan.sdk.utils.ProgressDialogUtils;
@@ -46,6 +48,15 @@ public class MainActivity extends BaseActivity implements InitYkanListener {
         initView();
         initListener();
         dialogUtils = new ProgressDialogUtils(this);
+//        final YkanIRInterface ykanIRInterface = new YkanIRInterfaceImpl(this);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String result = ykanIRInterface.init();
+//                Log.e("TT", result);
+//            }
+//        }).start();
+
         // 初始化SDK
         YkanSDKManager.init(this, this);
         //需要剥离机智云的用户调用此方法初始化
