@@ -267,7 +267,6 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
                         tvTrunkSend.setText(data);
                         driverControl.sendCMD(data, SendType.Trunk);
                     }
-
                 }
             });
             //-------------------    433/315 模块start   ----------------------
@@ -317,11 +316,11 @@ public class YKCodeAPIActivity extends BaseActivity implements View.OnClickListe
         spType = (Spinner) findViewById(R.id.spType);
         spBrands = (Spinner) findViewById(R.id.spBrand);
         spRemotes = (Spinner) findViewById(R.id.spData);
-        typeAdapter = new ArrayAdapter<String>(this,
+        typeAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, nameType);
-        brandAdapter = new ArrayAdapter<String>(this,
+        brandAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, nameBrands);
-        remoteAdapter = new ArrayAdapter<String>(this,
+        remoteAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, nameRemote);
         typeAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
